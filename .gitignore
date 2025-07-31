@@ -1,0 +1,47 @@
+# 🟡 Java y Spring Boot
+target/
+*.class
+*.jar
+*.war
+*.iml
+*.log
+
+# 🟡 IDEs y editores
+/.idea/
+/.vscode/
+/*.iws
+*.ipr
+*.iml
+
+# 🟡 SO archivos temporales
+.DS_Store
+Thumbs.db
+
+# 🟡 Configuración de entorno
+.env
+*.env
+*.local
+
+# 🟡 Logs y caches
+*.log
+logs/
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# 🟡 Node (frontend)
+node_modules/
+dist/
+build/
+
+# 🟡 Salida de herramientas
+/coverage/
+/test-output/
+/out/
+
+# 🟡 Carpeta personalizada para exportaciones
+/zips/
+
+# 🟡 Archivos BPMN temporales
+*.bpmn.backup
