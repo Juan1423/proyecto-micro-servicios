@@ -4,6 +4,8 @@ package com.gestion.publicaciones.auth.service;
 import com.gestion.publicaciones.auth.config.JwtUtil;
 import com.gestion.publicaciones.auth.model.Usuario;
 import com.gestion.publicaciones.auth.repository.UsuarioRepository;
+import com.nimbusds.jose.JOSEException;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +40,14 @@ public class AuthService {
                 .build();
 
         usuarioRepository.save(user);
-        return jwtUtil.generateToken(user.getId(), user.getRoles());
+        try {
+            return jwtUtil.generateToken(user.getId(), user.getRoles());
+        } catch (JOSEException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            throw new RuntimeException("Error al generar el token");
+        }
+        
     }
 
     public String login(String email, String password) {
@@ -47,6 +56,12 @@ public class AuthService {
             throw new RuntimeException("Credenciales inválidas");
         }
         Usuario user = userOpt.get();
-        return jwtUtil.generateToken(user.getId(), user.getRoles());
+        try {
+            return jwtUtil.generateToken(user.getId(), user.getRoles());
+        } catch (JOSEException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            throw new RuntimeException("Error al generar el token");
+        }
     }
 }
