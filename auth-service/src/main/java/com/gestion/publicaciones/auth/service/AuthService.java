@@ -6,6 +6,7 @@ import com.gestion.publicaciones.auth.model.Usuario;
 import com.gestion.publicaciones.auth.repository.UsuarioRepository;
 import com.nimbusds.jose.JOSEException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ import java.util.UUID;
 @Service
 public class AuthService {
 
+    @Autowired
+    private EventoService eventoService;
     private final UsuarioRepository usuarioRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
@@ -41,6 +44,7 @@ public class AuthService {
 
         usuarioRepository.save(user);
         try {
+             eventoService.notificarRegistro(user.getEmail());
             return jwtUtil.generateToken(user.getId(), user.getRoles());
         } catch (JOSEException e) {
             // TODO Auto-generated catch block
@@ -57,6 +61,7 @@ public class AuthService {
         }
         Usuario user = userOpt.get();
         try {
+            eventoService.notificarLogin(email);
             return jwtUtil.generateToken(user.getId(), user.getRoles());
         } catch (JOSEException e) {
             // TODO Auto-generated catch block
