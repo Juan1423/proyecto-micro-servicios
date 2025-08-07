@@ -25,8 +25,10 @@ spring:
     username: guest
     password: guest
   security:
-    user:
-      password: none
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8081/.well-known/jwks.json
 eureka:
   client:
     service-url:
