@@ -1,43 +1,56 @@
-import { useState } from 'preact/hooks'
-import preactLogo from './assets/preact.svg'
-import viteLogo from '/vite.svg'
-import './app.css'
+import { Router, Route } from 'preact-router'
+import LoginForm from './pages/LoginForm'
+import Dashboard from './pages/Dashboard'
 
-export function App() {
-  const [count, setCount] = useState(0)
+import MisPublicaciones from './pages/autor/MisPublicaciones'
+import EditarPublicacion from './pages/autor/EditarPublicacion'
+import CrearPublicacion from './pages/autor/CrearPublicacion'
 
+{/* Segunda Ventana Revisor */}
+import PublicacionesAsignadas from './pages/revisor/PublicacionesAsignadas'
+ {/*import RevisionComentarios from './pages/revisor/RevisionComentarios'*/}
+
+
+{/* Tercera Ventana Editor */}
+import GestionRevision from './pages/editor/GestionRevision'
+
+{/* Roles */}
+import Autor from './pages/Autor'
+import Editor from './pages/Editor'
+import Revisor from './pages/Revisor'
+
+
+import CatalogoPublico from './pages/CatalogoPublico'
+
+const App = () => {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} class="logo" alt="Vite logo" />
-        </a>
-        <a href="https://preactjs.com" target="_blank">
-          <img src={preactLogo} class="logo preact" alt="Preact logo" />
-        </a>
-      </div>
-      <h1>Vite + Preact</h1>
-      <div class="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/app.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p>
-        Check out{' '}
-        <a
-          href="https://preactjs.com/guide/v10/getting-started#create-a-vite-powered-preact-app"
-          target="_blank"
-        >
-          create-preact
-        </a>
-        , the official Preact + Vite starter
-      </p>
-      <p class="read-the-docs">
-        Click on the Vite and Preact logos to learn more
-      </p>
-    </>
+    <Router>
+      <Route path="/" component={LoginForm} />
+      <Route path="/dashboard" component={Dashboard} />
+
+      <Route path="/mis-publicaciones" component={MisPublicaciones} />
+      <Route path="/publicacion/nueva" component={EditarPublicacion} />
+      <Route path="/publicacion/editar/:id" component={EditarPublicacion} />
+      <Route path="/publicacion/nueva" component={CrearPublicacion} />
+
+        {/* Segunda Ventana Revisor */}
+
+       <Route path="/revisor/asignadas" component={PublicacionesAsignadas} />
+        {/*<Route path="/revisor/comentar/:id" component={RevisionComentarios} />*/}
+
+        {/* Tercera Ventana Editor */}
+        <Route path="/editor/gestion" component={GestionRevision} />
+
+
+        <Route path="/autor" component={Autor} />
+         <Route path="/editor" component={Editor} />
+      <Route path="/revisor" component={Revisor} />
+     
+
+     <Route path="/catalogo" component={CatalogoPublico} />
+
+    </Router>
   )
 }
+
+export default App
