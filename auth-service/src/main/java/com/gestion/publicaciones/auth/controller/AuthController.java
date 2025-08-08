@@ -16,9 +16,11 @@ import java.util.Set;
 public class AuthController {
 
     private final AuthService authService;
+    private final JwtUtil jwtUtil;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, JwtUtil jwtUtil) {
         this.authService = authService;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/register")
@@ -47,7 +49,6 @@ public class AuthController {
 
     @GetMapping("/.well-known/jwks.json")
     public Map<String, Object> getJwk() {
-        JwtUtil jwtUtil = new JwtUtil();
         return Map.of("keys", List.of(jwtUtil.getJwk().toJSONObject()));
     }
 

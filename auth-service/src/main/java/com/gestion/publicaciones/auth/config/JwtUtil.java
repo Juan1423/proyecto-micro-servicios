@@ -26,8 +26,15 @@ public class JwtUtil {
 
     @PostConstruct
     public void loadKeys() throws Exception {
+        try {
+            
+        
         InputStream privStream = getClass().getClassLoader().getResourceAsStream("keys/private_key.pem");
         InputStream pubStream = getClass().getClassLoader().getResourceAsStream("keys/public_key.pem");
+
+        if (privStream == null || pubStream == null) {
+            throw new RuntimeException("No se encontraron las claves en el classpath");
+        }
 
         // Leer claves con KeyFactory (usa BouncyCastle o similar si da error con PEM)
         privateKey = (RSAPrivateKey) PemUtils.readPrivateKey(privStream);
@@ -37,6 +44,13 @@ public class JwtUtil {
                 .privateKey(privateKey)
                 .keyID("auth-key-id")
                 .build();
+
+        System.out.println("Claves cargadas correctamente, rsaJwk NO es null");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al cargar las claves RSA", e);
+        }
     }
 
     public String generateToken(UUID userId, Set<String> roles) throws JOSEException {

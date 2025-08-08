@@ -1,13 +1,17 @@
 server:
-  port: 8081
+  port: 9091
 
 spring:
   application:
     name: auth-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/authdb
-    username: postgres
-    password: '1234'
+    #url: jdbc:postgresql://localhost:5432/authdb
+    #username: postgres
+    #password: '1234'
+    #driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:26257/auth_db
+    username: root
+    password:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -28,7 +32,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:8081/.well-known/jwks.json
+          jwk-set-uri: http://localhost:9091/auth/.well-known/jwks.json
       
 eureka:
   client:
