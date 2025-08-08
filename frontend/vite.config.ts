@@ -1,7 +1,13 @@
 import { defineConfig } from 'vite'
-import preact from '@preact/preset-vite'
+import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [preact()],
+  plugins: [react()],
+  server: {
+    port: 5173,
+    proxy: {
+      '/auth': 'http://localhost:8080',
+      '/catalogo': 'http://localhost:8080',
+    },
+  },
 })
