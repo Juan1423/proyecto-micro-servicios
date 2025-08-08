@@ -1,5 +1,5 @@
 server:
-  port: 9091
+  port: 9090
 
 spring:
   application:
@@ -32,7 +32,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:9091/auth/.well-known/jwks.json
+          jwk-set-uri: http://localhost:9090/auth/.well-known/jwks.json
       
 eureka:
   client:
