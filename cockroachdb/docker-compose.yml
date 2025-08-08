@@ -44,7 +44,7 @@ services:
       - "8083:8080"
     volumes:
       - cockroach4:/cockroach/cockroach-data
-    command: start --insecure --store=node3 --listen-addr=0.0.0.0:26257 --http-addr=0.0.0.0:8080 --join=crdb-node1:26257 --advertise-addr=crdb-node
+    command: start --insecure --store=node4 --listen-addr=0.0.0.0:26257 --http-addr=0.0.0.0:8080 --join=crdb-node1:26257 --advertise-addr=crdb-node4
 
   # === RabbitMQ ===
   rabbitmq:
