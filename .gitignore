@@ -47,3 +47,7 @@ build/
 *.bpmn.backup
 
 
+ACT_3_ARQ.pdf
+error.txt
+prueba-publicaciones.txt
+start-services.bat
