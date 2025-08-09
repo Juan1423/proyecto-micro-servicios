@@ -23,7 +23,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-public abstract class Publicacion {
+public class Publicacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

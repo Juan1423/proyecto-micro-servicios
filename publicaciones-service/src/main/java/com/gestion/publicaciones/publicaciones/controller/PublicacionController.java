@@ -5,6 +5,7 @@ import com.gestion.publicaciones.publicaciones.domain.Publicacion;
 import com.gestion.publicaciones.publicaciones.service.PublicacionService;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,12 @@ public class PublicacionController {
     public ResponseEntity<List<Publicacion>> getAllPublicaciones() {
         List<Publicacion> publicaciones = publicacionService.getAllPublicaciones();
         return ResponseEntity.ok(publicaciones);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Publicacion> getPublicacionById(@PathVariable UUID id) {
+        Publicacion publicacion = publicacionService.getPublicacionById(id);
+        return ResponseEntity.ok(publicacion);
     }
 
     @PostMapping
@@ -61,5 +68,16 @@ public class PublicacionController {
     @PutMapping("/{id}/retire")
     public Publicacion retirePublication(@PathVariable UUID id) throws JsonProcessingException {
         return publicacionService.retirePublication(id);
+    }
+
+    @PutMapping("/{id}")
+    public Publicacion updatePublicacion(@PathVariable UUID id, @RequestBody Publicacion publicacion) throws JsonProcessingException {
+        return publicacionService.updatePublicacion(id, publicacion);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePublicacion(@PathVariable UUID id) {
+        publicacionService.deletePublicacion(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,5 +1,6 @@
 package com.gestion.publicaciones.publicaciones.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +23,7 @@ public class OutboxEvent {
     private String aggregateId;
     private String aggregateType;
     private String eventType;
+    @Column(columnDefinition = "TEXT") // Increase column length for JSON payload
     private String payloadJson;
     private String status;
     private LocalDateTime fechaCreacion;
