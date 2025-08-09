@@ -11,6 +11,13 @@ cd cockroachdb
 docker-compose up -d
 ```
 
+Después de iniciar CockroachDB, debe crear las bases de datos necesarias. Conéctese a la instancia de CockroachDB y ejecute los siguientes comandos SQL:
+
+```bash
+# Conéctese a CockroachDB (asegúrese de que el cliente psql esté instalado y en su PATH)
+psql -h localhost -p 26257 -U root --no-password -e "CREATE DATABASE auth_db; CREATE DATABASE catalogo_db; CREATE DATABASE notif_db; CREATE DATABASE pub_db;"
+```
+
 ## 2. Colocar Clave Privada para el Servicio de Autenticación
 
 Para que el `auth-service` funcione correctamente, debe colocar un archivo de clave privada en sus recursos. ingeniero en la carpeta compartida esta el archivo.
