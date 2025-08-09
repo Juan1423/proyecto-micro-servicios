@@ -20,18 +20,14 @@ public class NotificationConsumer {
     @RabbitListener(queues = QUEUE_NAME)
     public void receiveNotification(String message) {
         System.out.println("Received message: " + message);
-        // In a real application, you would parse the message to extract recipient, subject, and eventType
-        String recipient = "test@example.com"; // Placeholder
-        String subject = "Notification from System"; // Placeholder
-        String eventType = "unknown.event"; // Placeholder, derive from message content
+        // The 'message' here is the email address sent by auth-service
+        String recipient = message; 
+        String subject = "Registro Exitoso en el Sistema de Publicaciones"; 
+        String eventType = "user.registered"; // Assuming this consumer primarily handles user registration for now
 
-        // Basic attempt to derive eventType from message if it's a simple string
-        if (message != null && message.contains("publication")) {
-            eventType = "publication.event";
-        } else if (message != null && message.contains("user")) {
-            eventType = "user.event";
-        }
+        // In a more complex scenario, you'd parse a JSON message to get eventType and other details
+        // For now, we'll assume the message is the recipient email and the event is user.registered
 
-        notificationService.sendNotification(recipient, subject, message, eventType);
+        notificationService.sendNotification(recipient, subject, "¡Bienvenido! Tu cuenta ha sido creada exitosamente.", eventType);
     }
 }

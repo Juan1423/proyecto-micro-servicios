@@ -10,16 +10,16 @@ spring:
     username: guest
     password: guest
   mail:
-    host: your.smtp.host.com
-    port: 587 # Or your SMTP port (e.g., 465 for SSL)
-    username: your-email@example.com
-    password: your-email-password
+    host: localhost
+    port: 1025
+    username: # No username needed for MailHog
+    password: # No password needed for MailHog
     properties:
       mail:
         smtp:
-          auth: true
+          auth: false # No authentication needed
           starttls:
-            enable: true
+            enable: false # No TLS needed
   datasource:
     url: jdbc:postgresql://localhost:26258/notif_db # Assuming notif_db for notifications
     username: root
