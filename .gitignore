@@ -54,3 +54,6 @@ start-services.bat
 pruebas deinsercion.txt
 auth-setup.txt
 pruebas de insercion.txt
+GEMINI.md
+launch-all.bat
+launch-all.sh

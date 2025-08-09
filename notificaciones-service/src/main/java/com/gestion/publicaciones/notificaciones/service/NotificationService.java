@@ -1,9 +1,11 @@
 package com.gestion.publicaciones.notificaciones.service;
 
 import com.gestion.publicaciones.notificaciones.domain.NotificationLog;
+import com.gestion.publicaciones.notificaciones.dto.User;
 import com.gestion.publicaciones.notificaciones.repository.NotificationLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 
@@ -12,11 +14,13 @@ public class NotificationService {
 
     private final NotificationLogRepository notificationLogRepository;
     private final EmailService emailService;
+    private final RestTemplate restTemplate;
 
     @Autowired
-    public NotificationService(NotificationLogRepository notificationLogRepository, EmailService emailService) {
+    public NotificationService(NotificationLogRepository notificationLogRepository, EmailService emailService, RestTemplate restTemplate) {
         this.notificationLogRepository = notificationLogRepository;
         this.emailService = emailService;
+        this.restTemplate = restTemplate;
     }
 
     public void sendNotification(String recipient, String subject, String message, String eventType) {
@@ -36,5 +40,16 @@ public class NotificationService {
         log.setStatus("SENT"); // Or PENDING, FAILED based on actual sending result
         log.setEventType(eventType);
         notificationLogRepository.save(log);
+    }
+
+    public String getUserEmail(String userId) {
+        try {
+            User user = restTemplate.getForObject("http://auth-service/users/" + userId, User.class);
+            return user != null ? user.getEmail() : null;
+        } catch (Exception e) {
+            // Log the error
+            System.err.println("Error fetching user email: " + e.getMessage());
+            return null;
+        }
     }
 }

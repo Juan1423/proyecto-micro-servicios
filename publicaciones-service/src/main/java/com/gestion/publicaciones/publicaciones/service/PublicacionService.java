@@ -15,6 +15,7 @@ import com.gestion.publicaciones.publicaciones.repository.PublicacionRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -142,6 +143,10 @@ public class PublicacionService {
     public Publicacion getPublicacionById(UUID id) {
         return publicacionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Publicacion not found with ID: " + id));
+    }
+
+    public List<Publicacion> getPublicacionesByAutor(UUID autorId) {
+        return publicacionRepository.findByAutorPrincipalId(autorId);
     }
 
     public void deletePublicacion(UUID id) {

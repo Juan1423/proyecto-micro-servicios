@@ -1,21 +1,11 @@
 package com.gestion.publicaciones.catalogo.repository;
 
-import com.gestion.publicaciones.catalogo.entity.Publicacion;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.gestion.publicaciones.catalogo.domain.Publicacion;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
+@Repository
 public interface PublicacionRepository extends JpaRepository<Publicacion, UUID> {
-
-    @Query("SELECT p FROM Publicacion p " +
-           "WHERE LOWER(p.titulo) LIKE LOWER(CONCAT('%', :titulo, '%'))")
-    Page<Publicacion> buscarPorTitulo(@Param("titulo") String titulo, Pageable pageable);
-
-    @Query("SELECT p FROM Publicacion p " +
-           "WHERE LOWER(p.palabrasClave) LIKE LOWER(CONCAT('%', :palabrasClave, '%'))")
-    Page<Publicacion> buscarPorPalabrasClave(@Param("palabrasClave") String palabrasClave, Pageable pageable);
 }

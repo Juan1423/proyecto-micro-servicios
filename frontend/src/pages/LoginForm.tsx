@@ -98,9 +98,9 @@ export default function LoginForm() {
 
       <small style={{ opacity: 0.7 }}>
         Prueba: <br/>
-        autor@example.com / Autor123!<br/>
-        editor@example.com / Editor123!<br/>
-        revisor@example.com / Revisor123!
+        autor1@example.com / password123<br/>
+        editor@example.com / password123<br/>
+        revisor@example.com / password123 <br/>
       </small>
     </form>
   )

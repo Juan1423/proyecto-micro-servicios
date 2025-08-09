@@ -9,7 +9,7 @@ public class RabbitMQConfig {
 
     public static final String EXCHANGE_NAME = "publication.events";
     public static final String QUEUE_NAME = "catalog.publications";
-    public static final String ROUTING_KEY = "publication.submitted";
+    public static final String ROUTING_KEY = "publication.published";
 
     @Bean
     public TopicExchange exchange() {

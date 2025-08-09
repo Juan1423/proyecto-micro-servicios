@@ -5,8 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import com.gestion.publicaciones.publicaciones.domain.Publicacion;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface PublicacionRepository extends JpaRepository<Publicacion, UUID> {
+    List<Publicacion> findByAutorPrincipalId(UUID autorPrincipalId);
 }

@@ -25,7 +25,13 @@ const MisPublicaciones = () => {
     setLoading(true)
     setError(null)
     try {
-      const data = await fetchApi<Publicacion[]>('/publicaciones', 'GET', undefined, true);
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        setError('No se pudo encontrar el ID del usuario.');
+        setLoading(false);
+        return;
+      }
+      const data = await fetchApi<Publicacion[]>(`/publicaciones/autor/${userId}`, 'GET', undefined, true);
       setPublicaciones(data);
     } catch (err: any) {
       console.error('Error al cargar publicaciones:', err);

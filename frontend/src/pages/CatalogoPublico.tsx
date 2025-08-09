@@ -24,7 +24,7 @@ const CatalogoPublico = () => {
   useEffect(() => {
     const loadCatalog = async () => {
       try {
-        const backendItems = await fetchApi<ItemCatalogo[]>('/catalogo?page=0&size=5', 'GET', undefined, true); // authRequired: true
+        const backendItems = await fetchApi<ItemCatalogo[]>('/catalogo?page=0&size=5', 'GET', undefined, true);
         if (backendItems && backendItems.length > 0) {
           setItems(backendItems);
           localStorage.setItem(KEY_CAT, JSON.stringify(backendItems)); // Update local storage with backend data

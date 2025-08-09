@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -38,6 +39,12 @@ public class PublicacionController {
     public ResponseEntity<Publicacion> getPublicacionById(@PathVariable UUID id) {
         Publicacion publicacion = publicacionService.getPublicacionById(id);
         return ResponseEntity.ok(publicacion);
+    }
+
+    @GetMapping("/autor/{autorId}")
+    public ResponseEntity<List<Publicacion>> getPublicacionesByAutor(@PathVariable String autorId) {
+        List<Publicacion> publicaciones = publicacionService.getPublicacionesByAutor(UUID.fromString(autorId));
+        return ResponseEntity.ok(publicaciones);
     }
 
     @PostMapping
