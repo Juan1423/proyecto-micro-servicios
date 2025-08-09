@@ -4,6 +4,7 @@ package com.gestion.publicaciones.auth.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -24,7 +25,12 @@ public class Usuario {
 
     private String password; // Se guarda hasheada
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "usuario_roles",
+        joinColumns = @JoinColumn(name = "usuario_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
 }
 

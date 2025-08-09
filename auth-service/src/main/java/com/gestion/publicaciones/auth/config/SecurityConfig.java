@@ -18,7 +18,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
-            );
+            )
+            .oauth2ResourceServer(oauth2 -> oauth2.jwt());
         return http.build();
     }
 

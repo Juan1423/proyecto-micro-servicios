@@ -3,6 +3,7 @@ package com.gestion.publicaciones.auth.controller;
 
 
 import com.gestion.publicaciones.auth.config.JwtUtil;
+import com.gestion.publicaciones.auth.dto.LoginResponseDTO; // Import LoginResponseDTO
 import com.gestion.publicaciones.auth.service.AuthService;
 import lombok.Data;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) {
+    public LoginResponseDTO login(@RequestBody LoginRequest request) {
         return authService.login(request.email, request.password);
     }
 
