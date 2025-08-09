@@ -29,7 +29,6 @@ const App = () => {
       <Route path="/dashboard" component={Dashboard} />
 
       <Route path="/mis-publicaciones" component={MisPublicaciones} />
-      <Route path="/publicacion/nueva" component={EditarPublicacion} />
       <Route path="/publicacion/editar/:id" component={EditarPublicacion} />
       <Route path="/publicacion/nueva" component={CrearPublicacion} />
 

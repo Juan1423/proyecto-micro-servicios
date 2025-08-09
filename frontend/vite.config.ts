@@ -1,13 +1,16 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import preact from '@preact/preset-vite'
 
+// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [preact()],
   server: {
-    port: 5173,
     proxy: {
-      '/auth': 'http://localhost:8080',
-      '/catalogo': 'http://localhost:8080',
+      '/api': {
+        target: 'http://localhost:8085', // La URL de tu Gateway
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
     },
   },
 })

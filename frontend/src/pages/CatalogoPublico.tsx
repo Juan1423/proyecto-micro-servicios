@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'preact/hooks'
+import { fetchApi } from '../api/apiClient' // Import fetchApi
 
 type Tipo = 'ARTICULO' | 'LIBRO' | 'OTRO'
 
@@ -19,21 +20,49 @@ const CatalogoPublico = () => {
   const [tipo, setTipo] = useState<Tipo | 'TODOS'>('TODOS')
   const [tag, setTag] = useState('')           // filtro por palabra clave
 
-  // Semilla de ejemplo si no hay nada (para que se vea algo desde ya)
+  // Cargar datos del backend o usar semilla de ejemplo
   useEffect(() => {
-    const raw = localStorage.getItem(KEY_CAT)
-    if (raw) {
-      setItems(JSON.parse(raw))
-      return
-    }
-    const seed: ItemCatalogo[] = [
-      { id: 'cat-1', titulo: 'Arquitectura de Microservicios', tipo: 'ARTICULO', autor: 'Equipo ESPE', palabrasClave: ['microservicios','eureka','gateway'], resumen: 'Buenas prácticas y patrones.' },
-      { id: 'cat-2', titulo: 'Libro: Ingeniería de Software Moderna', tipo: 'LIBRO', autor: 'A. García', palabrasClave: ['diseño','DDD','patrones'] },
-      { id: 'cat-3', titulo: 'Observabilidad en Sistemas Distribuidos', tipo: 'ARTICULO', autor: 'M. Torres', palabrasClave: ['prometheus','jaeger','telemetría'] },
-    ]
-    localStorage.setItem(KEY_CAT, JSON.stringify(seed))
-    setItems(seed)
-  }, [])
+    const loadCatalog = async () => {
+      try {
+        const backendItems = await fetchApi<ItemCatalogo[]>('/catalogo?page=0&size=5', 'GET', undefined, true); // authRequired: true
+        if (backendItems && backendItems.length > 0) {
+          setItems(backendItems);
+          localStorage.setItem(KEY_CAT, JSON.stringify(backendItems)); // Update local storage with backend data
+        } else {
+          // Fallback to local storage or seed if backend returns empty or null
+          const raw = localStorage.getItem(KEY_CAT);
+          if (raw) {
+            setItems(JSON.parse(raw));
+          } else {
+            const seed: ItemCatalogo[] = [
+              { id: 'cat-1', titulo: 'Arquitectura de Microservicios', tipo: 'ARTICULO', autor: 'Equipo ESPE', palabrasClave: ['microservicios','eureka','gateway'], resumen: 'Buenas prácticas y patrones.' },
+              { id: 'cat-2', titulo: 'Libro: Ingeniería de Software Moderna', tipo: 'LIBRO', autor: 'A. García', palabrasClave: ['diseño','DDD','patrones'] },
+              { id: 'cat-3', titulo: 'Observabilidad en Sistemas Distribuidos', tipo: 'ARTICULO', autor: 'M. Torres', palabrasClave: ['prometheus','jaeger','telemetría'] },
+            ];
+            localStorage.setItem(KEY_CAT, JSON.stringify(seed));
+            setItems(seed);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching catalog from backend:', error);
+        // Fallback to local storage or seed on error
+        const raw = localStorage.getItem(KEY_CAT);
+        if (raw) {
+          setItems(JSON.parse(raw));
+        } else {
+          const seed: ItemCatalogo[] = [
+            { id: 'cat-1', titulo: 'Arquitectura de Microservicios', tipo: 'ARTICULO', autor: 'Equipo ESPE', palabrasClave: ['microservicios','eureka','gateway'], resumen: 'Buenas prácticas y patrones.' },
+            { id: 'cat-2', titulo: 'Libro: Ingeniería de Software Moderna', tipo: 'LIBRO', autor: 'A. García', palabrasClave: ['diseño','DDD','patrones'] },
+            { id: 'cat-3', titulo: 'Observabilidad en Sistemas Distribuidos', tipo: 'ARTICULO', autor: 'M. Torres', palabrasClave: ['prometheus','jaeger','telemetría'] },
+          ];
+          localStorage.setItem(KEY_CAT, JSON.stringify(seed));
+          setItems(seed);
+        }
+      }
+    };
+
+    loadCatalog();
+  }, []);
 
   const filtrados = useMemo(() => {
     const term = q.trim().toLowerCase()

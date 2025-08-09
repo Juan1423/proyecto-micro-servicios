@@ -1,14 +1,14 @@
 import { useState } from 'preact/hooks'
 import { route } from 'preact-router'
+import { fetchApi } from '../api/apiClient'
+import { jwtDecode } from 'jwt-decode' // Import jwtDecode
 
-type Rol = 'AUTOR' | 'EDITOR' | 'REVISOR'
-interface Usuario { email: string; password: string; rol: Rol }
+type Rol = 'ROLE_AUTOR' | 'ROLE_EDITOR' | 'ROLE_REVISOR' | 'ROLE_ADMIN' | 'ROLE_LECTOR'
 
-const USERS: Usuario[] = [
-  { email: 'autor@example.com',   password: 'Autor123!',   rol: 'AUTOR'   },
-  { email: 'editor@example.com',  password: 'Editor123!',  rol: 'EDITOR'  },
-  { email: 'revisor@example.com', password: 'Revisor123!', rol: 'REVISOR' },
-]
+interface LoginResponseData {
+  token: string;
+  role: Rol;
+}
 
 export default function LoginForm() {
   const [email, setEmail] = useState('')
@@ -17,32 +17,55 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false)
 
   const goByRole = (rol: Rol) => {
-    if (rol === 'AUTOR')   route('/autor')
-    if (rol === 'EDITOR')  route('/editor')
-    if (rol === 'REVISOR') route('/revisor')
+    if (rol === 'ROLE_AUTOR')   route('/autor')
+    else if (rol === 'ROLE_EDITOR')  route('/editor')
+    else if (rol === 'ROLE_REVISOR') route('/revisor')
+    else if (rol === 'ROLE_ADMIN')   route('/admin')
+    else if (rol === 'ROLE_LECTOR')  route('/lector')
+    else route('/')
   }
 
-  const handleSubmit = (e: Event) => {
+  const handleSubmit = async (e: Event) => {
     e.preventDefault()
     setError(null)
     setLoading(true)
 
-    // mock auth
-    const user = USERS.find(u => u.email === email && u.password === password)
+    try {
+      const response = await fetchApi<LoginResponseData>('/auth/login', 'POST', { email, password }, false)
+      const { token, role } = response
 
-    setTimeout(() => {
-      setLoading(false)
-      if (!user) {
-        setError('Credenciales inválidas')
-        return
+      if (token && role) {
+        localStorage.setItem('token', token)
+        localStorage.setItem('rol', role)
+        localStorage.setItem('email', email)
+
+        // Decode JWT to get user ID and store it
+        try {
+          const decodedToken: { sub: string } = jwtDecode(token);
+          localStorage.setItem('userId', decodedToken.sub);
+        } catch (decodeError) {
+          console.error("Error decoding token:", decodeError);
+          setError("Error al decodificar el token de usuario.");
+          setLoading(false);
+          return;
+        }
+
+        goByRole(role)
+      } else {
+        setError('Respuesta de autenticación inválida.')
       }
-      // guarda "sesión" mínima
-      localStorage.setItem('token', 'demo-token')
-      localStorage.setItem('rol', user.rol)
-      localStorage.setItem('email', user.email)
-
-      goByRole(user.rol)
-    }, 500)
+    } catch (err: any) {
+      console.error('Error de autenticación:', err)
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message)
+      } else if (err.message) {
+        setError(err.message)
+      } else {
+        setError('Error al iniciar sesión. Inténtalo de nuevo.')
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
